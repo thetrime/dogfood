@@ -34,7 +34,7 @@ serve_form(Request):-
                             '}'], '\n', Bootstrap),
 
 
-        Body = element(body, [], [element(div, [id=container, style='width: 100%;'], []),
+        Body = element(body, [], [element(div, [id=container, style='width: 100%; height: 100%;'], []),
                                   element(script, [type='text/javascript'], [Bootstrap]),
                                   element(script, [type='text/javascript', src='/assets/lib/proactive.js'], [])
                                  ]),
