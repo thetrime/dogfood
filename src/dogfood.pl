@@ -1,18 +1,27 @@
 :-module(dogfood, []).
 
-render(_State, _Props, Form):-
+render(State, _Props, Form):-
         {|jsx(Form)||
         <Panel fill="both">
           <Label label="Welcome to Dogfood"/>
-          <Field fill="horizontal"/>
+          <Field fill="horizontal" onChange={this.search} value={State.search_key}/>
           <Panel fill="both" scroll="vertical">
             {Rows}
           </Panel>
         </Panel>|},
         findall(Data,
-                data(Data),
+                ( data(Data),
+                  downcase_atom(Data, DataLC),
+                  once(sub_atom(DataLC, _, _, _, State.search_key))
+                ),
                 Items),
         make_rows(Items, 0, Rows).
+
+getInitialState(_, {search_key: ''}).
+
+search(Event, _, _, {search_key: SearchLC}):-
+        memberchk(value=Search, Event),
+        downcase_atom(Search, SearchLC).
                 
 make_rows([], _, []):- !.
 make_rows([Item|Items], N, [Row|Rows]):-
